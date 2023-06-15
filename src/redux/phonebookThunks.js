@@ -1,9 +1,18 @@
-import { createAsyncThunk } from "@reduxjs/toolkit";
-import { getContacts } from "phonebookAPI";
+import { createAsyncThunk } from '@reduxjs/toolkit';
+import { getContacts, deleteContact } from 'phonebookAPI';
 
-export const getContactsThunk = createAsyncThunk('phonebook/getContacts',
- async () => {
+export const getContactsThunk = createAsyncThunk(
+  'phonebook/getContacts',
+  async () => {
     const data = await getContacts();
-    console.log('thunkdata', data)
     return data;
- });
+  }
+);
+
+export const deleteContactThunk = createAsyncThunk(
+  'phonebook/deleteContact',
+  async id => {
+    const data = await deleteContact(id);
+    return data;
+  }
+);

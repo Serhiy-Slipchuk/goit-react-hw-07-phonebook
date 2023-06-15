@@ -1,6 +1,6 @@
 import css from './ContactItem.module.scss';
 import { useDispatch } from 'react-redux';
-import { deleteContact } from 'redux/phonebookSlice';
+import { deleteContactThunk, getContactsThunk } from 'redux/phonebookThunks';
 import PropTypes from 'prop-types';
 
 const ContactItem = function ({ name, number, id }) {
@@ -17,7 +17,8 @@ const ContactItem = function ({ name, number, id }) {
         type="button"
         id={id}
         onClick={() => {
-          dispatch(deleteContact(id));
+          dispatch(deleteContactThunk(id));
+          dispatch(getContactsThunk())
         }}
       >
         Delete

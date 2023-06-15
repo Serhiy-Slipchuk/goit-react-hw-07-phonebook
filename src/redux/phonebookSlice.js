@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { initialState } from './initialState';
-import { getContactsThunk } from './phonebookThunks';
+import { getContactsThunk, deleteContactThunk } from './phonebookThunks';
 
 export const phonebookSlice = createSlice({
   name: 'phonebook',
@@ -29,10 +29,18 @@ export const phonebookSlice = createSlice({
         state.contacts.error = '';
       })
       .addCase(getContactsThunk.rejected, (state, {error} ) => {
-        console.log('obj', error.message)
         state.contacts.isLoading = false;
         state.contacts.error = error.message;
-      });
+      }).addCase(deleteContactThunk.pending, state => {
+        state.contacts.isLoading = true;
+      } ).addCase(deleteContactThunk.fulfilled, (state, { payload }) => {
+        state.contacts.isLoading = false;
+        state.contacts.items = state.contacts.items.filter(contact => contact.id !== payload);
+        state.contacts.error = '';
+      }).addCase(deleteContactThunk.rejected, (state, {error}) => {
+        state.contacts.isLoading = false;
+        state.contacts.error = error.message;
+      })
   },
 });
 
