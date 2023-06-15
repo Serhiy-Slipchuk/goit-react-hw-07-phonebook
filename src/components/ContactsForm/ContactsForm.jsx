@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { contactsSelector } from 'redux/selectors';
-import { addContact } from 'redux/phonebookSlice';
 import { nanoid } from 'nanoid';
+import { addNewContactThunk } from 'redux/phonebookThunks';
 import css from './ContactsForm.module.scss';
 
 const ContactsForm = function () {
@@ -36,7 +36,7 @@ const ContactsForm = function () {
       };
       setName('');
       setNumber('');
-      dispatch(addContact(newContact));
+      dispatch(addNewContactThunk(newContact));
     } else {
       window.alert(`${name} is already in contacts.`);
     }

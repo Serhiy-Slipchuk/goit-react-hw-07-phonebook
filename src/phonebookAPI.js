@@ -7,6 +7,11 @@ export const getContacts = async function() {
     return data
 }
 
+export const addContact = async function(newContact) {
+    const data = await axios.post(BASE_URL, newContact)
+    return data
+}
+
 export const deleteContact = async function(id) {
     const data = await axios.delete(`${BASE_URL}/${id}`);
     return data
