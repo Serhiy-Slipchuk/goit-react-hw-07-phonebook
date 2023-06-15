@@ -5,6 +5,13 @@ import {
   addNewContactThunk,
   deleteContactThunk,
 } from './phonebookThunks';
+import {
+  handlerGetContacts,
+  handlerAddNewContact,
+  handlerDeleteContact,
+  handlerPending,
+  handlerError,
+} from './phonebookSliceHandlers';
 
 export const phonebookSlice = createSlice({
   name: 'phonebook',
@@ -14,54 +21,19 @@ export const phonebookSlice = createSlice({
     updateFilter: (state, { payload }) => {
       state.filter = payload;
     },
-    // addContact: (state, { payload }) => {
-    //   state.contacts.items = [...state.contacts.items, payload];
-    // },
-    // deleteContact: (state, { payload }) => {
-    //   state.contacts.items = state.contacts.items.filter(contact => contact.id !== payload);
-    // },
   },
 
   extraReducers: builder => {
     builder
-      .addCase(getContactsThunk.pending, state => {
-        state.contacts.isLoading = true;
-      })
-      .addCase(getContactsThunk.fulfilled, (state, { payload }) => {
-        state.contacts.isLoading = false;
-        state.contacts.items = payload.data;
-        state.contacts.error = '';
-      })
-      .addCase(getContactsThunk.rejected, (state, { error }) => {
-        state.contacts.isLoading = false;
-        state.contacts.error = error.message;
-      })
-      .addCase(addNewContactThunk.pending, state => {
-        state.contacts.isLoading = true;
-      })
-      .addCase(addNewContactThunk.fulfilled, (state, { payload }) => {
-        state.contacts.isLoading = false;
-        state.contacts.items = [...state.contacts.items, payload.data];
-        state.contacts.error = '';
-      })
-      .addCase(addNewContactThunk.rejected, (state, { error }) => {
-        state.contacts.isLoading = false;
-        state.contacts.error = error.message;
-      })
-      .addCase(deleteContactThunk.pending, state => {
-        state.contacts.isLoading = true;
-      })
-      .addCase(deleteContactThunk.fulfilled, (state, { payload }) => {
-        state.contacts.isLoading = false;
-        state.contacts.items = state.contacts.items.filter(
-          contact => contact.id !== payload.data.id
-        );
-        state.contacts.error = '';
-      })
-      .addCase(deleteContactThunk.rejected, (state, { error }) => {
-        state.contacts.isLoading = false;
-        state.contacts.error = error.message;
-      });
+      .addCase(getContactsThunk.pending, handlerPending)
+      .addCase(getContactsThunk.fulfilled, handlerGetContacts)
+      .addCase(getContactsThunk.rejected, handlerError)
+      .addCase(addNewContactThunk.pending, handlerPending)
+      .addCase(addNewContactThunk.fulfilled, handlerAddNewContact)
+      .addCase(addNewContactThunk.rejected, handlerError)
+      .addCase(deleteContactThunk.pending, handlerPending)
+      .addCase(deleteContactThunk.fulfilled, handlerDeleteContact)
+      .addCase(deleteContactThunk.rejected, handlerError);
   },
 });
 
