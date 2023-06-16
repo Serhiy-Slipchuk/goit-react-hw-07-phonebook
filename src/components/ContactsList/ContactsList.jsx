@@ -2,10 +2,9 @@ import { useEffect } from 'react';
 import css from './ContactsList.module.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  contactsSelector,
+  filteredContactsSelector,
   isLoadingSelector,
   errorSelector,
-  filterSelector,
 } from 'redux/selectors';
 import ContactItem from 'components/ContactItem/ContactItem';
 import { getContactsThunk } from 'redux/phonebookThunks';
@@ -13,17 +12,9 @@ import ErrorMessage from 'components/ErrorMessage/ErrorMessage';
 import Loader from 'components/Loader/Loader';
 
 const ContactsList = function () {
-  const contacts = useSelector(contactsSelector);
+  const filteredContacts = useSelector(filteredContactsSelector);
   const isLoading = useSelector(isLoadingSelector);
   const errorMessage = useSelector(errorSelector);
-  const filter = useSelector(filterSelector);
-
-  let filteredContacts = [];
-  if (contacts.length > 0) {
-    filteredContacts = contacts.filter(contact =>
-      contact.name.toLowerCase().includes(filter.toLowerCase())
-    );
-  }
 
   const dispatch = useDispatch();
   useEffect(() => {
